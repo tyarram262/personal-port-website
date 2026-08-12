@@ -1,17 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "@/components/chrome/ThemeToggle";
+import { useActiveSection } from "@/lib/useActiveSection";
 
 const links = [
-  { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
-  { href: "#education", label: "Education" },
-  { href: "#skills", label: "Skills" },
+  { href: "#experience", label: "Experience", id: "experience" },
+  { href: "#projects", label: "Projects", id: "projects" },
+  { href: "#education", label: "Education", id: "education" },
+  { href: "#skills", label: "Skills", id: "skills" },
 ];
+
+const sectionIds = links.map((link) => link.id);
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const activeId = useActiveSection(sectionIds);
+
+  useEffect(() => {
+    if (!open) return;
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-bg/90 backdrop-blur-sm">
@@ -31,7 +50,10 @@ export function Nav() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-text-muted transition-colors duration-[var(--transition)] hover:text-accent"
+              aria-current={activeId === link.id ? "true" : undefined}
+              className={`text-sm font-medium transition-colors duration-[var(--transition)] hover:text-accent ${
+                activeId === link.id ? "text-accent" : "text-text-muted"
+              }`}
             >
               {link.label}
             </a>
@@ -41,6 +63,7 @@ export function Nav() {
         <div className="flex shrink-0 items-center gap-3">
           <ThemeToggle />
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
@@ -78,7 +101,10 @@ export function Nav() {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="border-b border-border py-4 text-sm font-medium text-text last:border-b-0"
+              aria-current={activeId === link.id ? "true" : undefined}
+              className={`border-b border-border py-4 text-sm font-medium last:border-b-0 ${
+                activeId === link.id ? "text-accent" : "text-text"
+              }`}
             >
               {link.label}
             </a>

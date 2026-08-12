@@ -69,7 +69,7 @@ export const projects: Project[] = [
     id: "momentum-trading-agent",
     name: "Momentum Autonomous Trading Agent + Pre-Trade Risk Dashboard",
     description:
-      "An end-to-end agentic trading system: an autonomous LLM agent analyzing live market data and executing long-only equity trades via Model Context Protocol (MCP) brokerage integrations, plus a full-stack pre-trade portfolio-impact app. Agent autonomy is constrained within a 15% max-drawdown limit via ATR-based position sizing, correlation filtering, and a tiered circuit breaker with git-backed state persistence. The analysis layer implements cross-account wash-sale detection over rolling 30-day windows, FIFO lot selection, and sector-concentration scoring, validated by a Vitest suite covering tax and risk logic.",
+      "An autonomous LLM agent that analyzes live market data and executes long-only equity trades via Model Context Protocol (MCP) brokerage integrations, constrained to a 15% max-drawdown limit through layered risk controls. Paired with a full-stack pre-trade dashboard for wash-sale detection and sector-concentration scoring.",
     tags: ["Next.js", "Python", "SQLite", "Docker"],
     period: "2025 – Present",
     href: "https://github.com/tyarram262/Ledger-Check",
